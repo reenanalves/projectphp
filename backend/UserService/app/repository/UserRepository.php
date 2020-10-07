@@ -14,12 +14,20 @@ class UserRepository implements Repository{
 
     }
 
-    public function loadAll(){
+    public function loadAll($limit, $offset){
 
     }
 
     public function findByPrimaryKey($id){
         return null;
+    }
+
+    public function findLastId(){
+
+    }
+
+    public function countAllRecords(){
+
     }
 
     public function findByUserAndPassAndStatus($user, $pass, $status) {

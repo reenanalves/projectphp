@@ -9,6 +9,11 @@ class Utils{
         return parse_ini_file("app/config/database.ini");
     }
 
+    public static function getIniConfig()
+    {
+        return parse_ini_file('app/config/config.ini', true);
+    }
+
     public static function getHeaders()
     {
         $headers = array();

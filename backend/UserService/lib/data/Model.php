@@ -27,6 +27,50 @@ abstract class Model {
         return $this->values;
     }
 
+    public function getProperties($includeprimarykey = true){
+        
+        $properties = clone $this->properties;
+        
+        if(!$includeprimarykey){
+            unset($properties[$this->primarykey]);
+        }
+
+        return $properties;
+    }
+
+    public function getValuesParamsToQuery($includeprimarykey = true){
+
+        $properties = clone $this->properties;
+
+        if(!$includeprimarykey){
+            unset($properties[$this->primarykey]);
+        }
+
+        $data = [];
+
+        foreach($properties as $key => $value){
+            $data[$key] = [":".$value => $this->values[$key]];
+        }
+
+        return $data;
+    }
+
+    public function getParamsToUpdateQuery($includeprimarykey = true){
+
+        $data = [];
+
+        foreach($this->properties as $key => $value){
+
+            if($key == $this->primarykey AND !$includeprimarykey){
+                continue;
+            }
+            
+            $data[$key] = [$value => ":".$value];
+        }
+
+        return $data;
+    }
+
     private function setValue($property, $value){
         if (in_array($property, $this->properties))
         {

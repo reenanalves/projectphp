@@ -2,75 +2,32 @@
 
 class AuthenticateService{    
 
-    public static function isTokenValid($token)
+    public static function Authenticate($token)
     {
+        if(!$token){
+            throw new Exception("Token is required!");
+        }   
 
-        $data = Auth::getDataToken($token);
-        
-        if ($data['expirein'] < strtotime('now'))
+        $ini = Utils::getIniConfig();
+
+        $url_resquest = $ini["config"]["url_userservice"];
+
+        $params = ["Token" => $token];
+
+        $response = HttpRequest::request($url_resquest,'POST', $params);
+
+        if($response["Code"] == "200")
         {
-            throw new Exception('Token expired!');
-        }
-        else
-        {
+            
+            Session::set("userid", $response["Body"]["id"]);
+            Session::set("username", $response["Body"]["name"]);
+            Session::set("userlogin", $response["Body"]["user"]);
+
             return true;
         }
-
-    }
-
-    public static function getUserByToken($token)
-    {
-
-        $data = Auth::getDataToken($token);
-
-        $userid   = $data['userid'];
-        $user  = $data['user'];
-        $name    = $data['name'];
-        
-        $object = new UserModel();
-        $object->id = $userid;
-        $object->user = $user;
-        $object->name = $name;
-
-        return $object;
-
-    }
-
-    public static function Authenticate($user, $pass)
-    {        
-        $repository = new UserRepository();
-
-        $user = $repository->findByUserAndPassAndStatus($user, $pass, UserModel::sEnable);
-
-        if($user){
-            return Auth::tokenGenerate(["userid"=>$user->id, "name"=> $user->name, "user"=> "user", "expirein" => strtotime("+ 3 hours")]);
-        }
         else{
-            return null;            
+            return false;
         }
-    }
-
-    public static function GetInfoToken($user, $pass)
-    {        
-        $repository = new UserRepository();
-
-        $user = $repository->findByUserAndPassAndStatus($user, $pass, UserModel::sEnable);
-
-        if($user){
-            return Auth::tokenGenerate(["userid"=>$user->id, "name"=> $user->name, "user"=> "user", "expirein" => strtotime("+ 3 hours")]);
-        }
-        else{
-            return null;            
-        }
-    }
-
-    public static function UpdateToken($token)
-    {
-
-        $data = Auth::getDataToken($token);
-        $data['expiresin'] = strtotime("+ 3 hours");
-
-        return Auth::tokenGenerate($data);
     }
 
 }

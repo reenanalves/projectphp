@@ -8,13 +8,21 @@ class AddressController
     {
         try {
 
-            $request = new POSTANDPUTaddressV1Request();
+            $request = new POSTANDPUTCustomerV1Request();
             $request->setValues($parameters);
             $request->validate();
 
-            $response = [];
+            $model = new CustomerModel();
+            $model->setValues($request->getValues());
 
-            return new StatusCodeOK(json_encode($response));
+            $model = CustomerService::store($model);
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                return new StatusCodeOK(json_encode(["Id" => $model->id]));
+            }else{
+                return new StatusCodeOK('');
+            }
+
 
         } catch (Exception $e) 
         {
@@ -26,13 +34,13 @@ class AddressController
     {
         try {
 
-            $request = new GETAddressV1Request();
+            $request = new GETCustomerV1Request();
             $request->setValues($parameters);
             $request->validate();
 
-            $response = [];
+            $response = CustomerService::findByPrimaryKey($request->Id);
 
-            return new StatusCodeOK(json_encode($response));
+            return new StatusCodeOK(json_encode($response->getValues()));
 
         } catch (Exception $e) 
         {
@@ -43,7 +51,19 @@ class AddressController
     public function GETAddressesV1($parameters)
     {
         try {
-            $response = [];
+            $request = new GETCustomersV1Request();
+            $request->setValues($parameters);
+
+            $data = CustomerService::loadAll($request->Page, $request->RecordsByPage);
+
+            $response = new PaginationTemplateResponse();
+            $response->Page = $request->Page;            
+            $response->RecordsByPage = $request->RecordsByPage;     
+            $response->TotalRecords = CustomerService::countAllRecords();  
+            
+            $pages = Math::truncate($response->TotalRecords / $response->RecordsByPage);            
+            $response->TotalPages = ($response->TotalRecords % $response->RecordsByPage) > 0 ? $pages + 1 : $pages;
+            $response->Data = $data;
 
             return new StatusCodeOK(json_encode($response));
 
@@ -57,13 +77,13 @@ class AddressController
     {
         try {
 
-            $request = new DELETEAddressV1Request();
+            $request = new DELETECustomerV1Request();
             $request->setValues($parameters);
             $request->validate();
 
-            $response = [];
+            CustomerService::delete($request->Id);
 
-            return new StatusCodeOK(json_encode($response));
+            return new StatusCodeOK();
 
         } catch (Exception $e) 
         {
