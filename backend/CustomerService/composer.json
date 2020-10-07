@@ -1,0 +1,18 @@
+{
+    "name": "renan/user-service",
+    "description": "Project php backend",
+    "authors": [
+        {
+            "name": "Renan Alves",
+            "email": "renan.alves49@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7",
+        "robmorgan/phinx": "^0.12.4",
+        "firebase/php-jwt": "^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "6.5"
+    }
+}
