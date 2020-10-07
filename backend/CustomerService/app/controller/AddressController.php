@@ -23,7 +23,6 @@ class AddressController
                 return new StatusCodeOK('');
             }
 
-
         } catch (Exception $e) 
         {
             return new StatusCodeBadRequest($e->getMessage());
