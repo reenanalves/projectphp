@@ -24,7 +24,7 @@ class StartUp
             
             $route = $router->$HTTPVerbRequest[$URI];
 
-            if ($route->getAuthenticate()) {
+            if ($route->getAuthenticate()) {                
                 if (!isset($headers['Token']) or !AuthenticateService::Authenticate($headers['Token'])) {
                     return new StatusCodeUnauthorized("");
                 }

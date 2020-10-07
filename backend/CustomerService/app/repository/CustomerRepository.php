@@ -14,7 +14,7 @@ class CustomerRepository implements Repository{
         
         $query = "";
 
-        if($object->id > 0){
+        if(!$object->id){
             $query = "INSERT INTO customer (".implode(",",$object->getProperties(false)).")".
                      " VALUES (".implode(',:', $object->getProperties(false)).") ";
         }
@@ -24,11 +24,17 @@ class CustomerRepository implements Repository{
 
         $queryResult = $this->connection->execQuery( $query, $object->getValuesParamsToQuery($object->id), !$object->id);
 
-        if(!$object->id){
-            $object->id = $queryResult;
-        }
+        if($queryResult)
+        {
+            
+            if(!$object->id){
+                $object->id = $queryResult;
+            }
 
-        return $object;   
+            return $object;
+        }   
+
+        throw new Exception("Fail in insert!");
     }
 
     public function loadAll($limit, $offset){
@@ -37,20 +43,22 @@ class CustomerRepository implements Repository{
         
         $queryResult = $this->connection->execQuery( $query, [':limit' => $limit, ':offset' => $offset, ':status'=>CustomerModel::sEnable]);
 
-        $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
+        if($queryResult){
 
-        if(count($object) > 0){
+            $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
 
-            $data = [];
+            if(count($object) > 0){
 
-            foreach($object as $key => $value)
-            {
-                $data[] = Utils::convertObjectToArray($value); 
-            }                              
+                $data = [];
 
-            return $data;
+                foreach($object as $key => $value)
+                {
+                    $data[] = Utils::convertObjectToArray($value); 
+                }                              
+
+                return $data;
+            }
         }
-
         return [];  
     }
 
@@ -60,13 +68,15 @@ class CustomerRepository implements Repository{
         
         $queryResult = $this->connection->execQuery( $query );
 
-        $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
+        if($queryResult){
+            $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
 
-        if(count($object) > 0){
+            if(count($object) > 0){
 
-            $data = Utils::convertObjectToArray($object[0]);        
+                $data = Utils::convertObjectToArray($object[0]);        
 
-            return $data["id"];
+                return $data["id"];
+            }
         }
 
         return null;  
@@ -78,16 +88,17 @@ class CustomerRepository implements Repository{
         
         $queryResult = $this->connection->execQuery( $query );
 
-        $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
+        if($queryResult){
+            $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
 
-        if(count($object) > 0){
+            if(count($object) > 0){
 
-            $data = Utils::convertObjectToArray($object[0]);        
+                $data = Utils::convertObjectToArray($object[0]);        
 
-            return $data["count"];
+                return $data["count"];
 
+            }
         }
-
         return null;  
     }
 
@@ -96,16 +107,18 @@ class CustomerRepository implements Repository{
         
         $queryResult = $this->connection->execQuery( $query, [':id' => $id, ':status'=>CustomerModel::sEnable]);
 
-        $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
+        if($queryResult){
+            $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
 
-        if(count($object) > 0){
+            if(count($object) > 0){
 
-            $data = Utils::convertObjectToArray($object[0]);        
+                $data = Utils::convertObjectToArray($object[0]);        
 
-            $customer = new CustomerModel();
-            $customer->setValues($data);
+                $customer = new CustomerModel();
+                $customer->setValues($data);
 
-            return $customer;
+                return $customer;
+            }
         }
 
         return null;  

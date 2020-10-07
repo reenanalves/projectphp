@@ -29,7 +29,8 @@ abstract class Model {
 
     public function getProperties($includeprimarykey = true){
         
-        $properties = clone $this->properties;
+        $properties = array();
+        $properties = $this->properties;
         
         if(!$includeprimarykey){
             unset($properties[$this->primarykey]);
@@ -40,7 +41,7 @@ abstract class Model {
 
     public function getValuesParamsToQuery($includeprimarykey = true){
 
-        $properties = clone $this->properties;
+        $properties = $this->properties;
 
         if(!$includeprimarykey){
             unset($properties[$this->primarykey]);

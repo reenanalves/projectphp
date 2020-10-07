@@ -39,6 +39,10 @@ class AddressController
 
             $response = AddressService::findByPrimaryKey($request->Id);
 
+            if(!$response){
+                return new StatusCodeNotFound();
+            }
+
             return new StatusCodeOK(json_encode($response->getValues()));
 
         } catch (Exception $e) 
@@ -52,8 +56,13 @@ class AddressController
         try {
             $request = new GETAddressesV1Request();
             $request->setValues($parameters);
-
+            $request->validate();
+            
             $data = AddressService::loadAll($request->Page, $request->RecordsByPage);
+
+            if(count($data) <= 0){                
+                return new StatusCodeNotFound("");                
+            }
 
             $response = new PaginationTemplateResponse();
             $response->Page = $request->Page;            

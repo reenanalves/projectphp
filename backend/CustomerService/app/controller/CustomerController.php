@@ -40,6 +40,10 @@ class CustomerController
 
             $response = CustomerService::findByPrimaryKey($request->Id);
 
+            if(!$response){
+                return new StatusCodeNotFound("");
+            }
+
             return new StatusCodeOK(json_encode($response->getValues()));
 
         } catch (Exception $e) 
@@ -53,8 +57,13 @@ class CustomerController
         try {
             $request = new GETCustomersV1Request();
             $request->setValues($parameters);
+            $request->validate();
 
             $data = CustomerService::loadAll($request->Page, $request->RecordsByPage);
+
+            if(count($data) <= 0){
+                return new StatusCodeNotFound("");
+            }
 
             $response = new PaginationTemplateResponse();
             $response->Page = $request->Page;            

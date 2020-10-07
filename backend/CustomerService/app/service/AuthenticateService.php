@@ -10,8 +10,8 @@ class AuthenticateService{
 
         $ini = Utils::getIniConfig();
 
-        $url_resquest = $ini["config"]["url_userservice"];
-
+        $url_resquest = $ini["config"]["url_userservice"] . "user/v1/TokenValidate";
+        
         $params = ["Token" => $token];
 
         $response = HttpRequest::request($url_resquest,'POST', $params);
@@ -19,9 +19,9 @@ class AuthenticateService{
         if($response["Code"] == "200")
         {
             
-            Session::set("userid", $response["Body"]["id"]);
-            Session::set("username", $response["Body"]["name"]);
-            Session::set("userlogin", $response["Body"]["user"]);
+            Session::set("userid", $response["Body"]->id);
+            Session::set("username", $response["Body"]->name);
+            Session::set("userlogin", $response["Body"]->user);
 
             return true;
         }

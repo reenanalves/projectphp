@@ -18,20 +18,33 @@ final class Migrate1 extends AbstractMigration
      */
     public function up(): void
     {
-        $this->execute("CREATE TABLE `user` (
+        $this->execute("CREATE TABLE `address` (
             `id` int(11) NOT NULL,
-            `user` varchar(30) NOT NULL,
-            `pass` varchar(33) NOT NULL,
-            `status` int(11) NOT NULL,
-            `name` varchar(30) NOT NULL
+            `customer_id` int(11) NOT NULL,
+            `street` varchar(100) NOT NULL,
+            `district` varchar(100) NOT NULL,
+            `number` varchar(20) NOT NULL,
+            `complement` varchar(30) NOT NULL,
+            `city` varchar(20) NOT NULL,
+            `state` varchar(2) NOT NULL,
+            `status` int(11) NOT NULL
           ) ENGINE=MyISAM DEFAULT CHARSET=latin1");
 
-        $this->execute("INSERT INTO `user` (`id`, `user`, `pass`, `status`, `name`) VALUES
-        (1, 'user', 'cc75e1c85b040aed61f8dbd87f4a8eb2', 1, 'Renan Alves da Silva')");
+        $this->execute("CREATE TABLE `customer` (
+            `id` int(11) NOT NULL,
+            `name` varchar(30) NOT NULL,
+            `birthday` date NOT NULL,
+            `document_cpf` varchar(20) NOT NULL,
+            `document_rg` varchar(20) NOT NULL,
+            `phone` varchar(20) NOT NULL,
+            `status` int(11) NOT NULL
+          ) ENGINE=MyISAM DEFAULT CHARSET=latin1");
     }
 
     public function down(): void
     {
-        $this->execute("DROP TABLE `user`");
+        $this->execute("DROP TABLE `address`");
+
+        $this->execute("DROP TABLE `customer`");
     }
 }
