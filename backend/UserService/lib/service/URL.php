@@ -25,7 +25,7 @@ class URL{
         if(array_key_exists($l, $this->Arr)):
             return $this->Arr[$l];
         else:
-            return null;
+            return "";
         endif;
     }
     
