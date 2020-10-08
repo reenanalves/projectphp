@@ -20,7 +20,7 @@ class UserController
 
             $response = ["Token" => $token];
 
-            return new StatusCodeOK(json_encode($response));
+            return new StatusCodeOK($response);
 
         } catch (Exception $e) 
         {
@@ -39,7 +39,7 @@ class UserController
 
             $response = ["Token" => $token];
 
-            return new StatusCodeOK(json_encode($response));
+            return new StatusCodeOK($response);
 
         } catch (Exception $e) 
         {
@@ -61,11 +61,10 @@ class UserController
             $user = AuthenticateService::getUserByToken($request->Token);            
 
             return 
-                new StatusCodeOK(
-                    json_encode(
+                new StatusCodeOK(                    
                         Utils::convertObjectToArray(
                             $user->getValues(),
-                                ["id","user","name"])));
+                                ["id","user","name"]));
 
         } catch (Exception $e) 
         {
