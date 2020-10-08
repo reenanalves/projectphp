@@ -18,6 +18,7 @@ class AutoLoader {
         $folders[] = 'lib/control/validator';        
         $folders[] = 'lib/data';
         $folders[] = 'lib/service';
+        $folders[] = 'app/response';
                 
         if (file_exists("{$class}.class.php"))
         {

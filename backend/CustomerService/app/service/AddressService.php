@@ -15,7 +15,7 @@ class AddressService{
 
     public static function loadAll($page, $limit){
         $repository = new AddressRepository();
-        return $repository->loadAll($limit, ($page * $limit) - $limit);
+        return $repository->loadAll($limit, $page > 1 ? ($page * $limit) - $limit : 0);
     }
 
     public static function countAllRecords(){
@@ -24,8 +24,25 @@ class AddressService{
     }
 
     public static function delete($id){
-        $repository = new AddressRepository();
-        return $repository->delete($id);
+        $repository = new AddressRepository();        
+
+        $object = $repository->findByPrimaryKey($id);
+
+        if(!$object){
+            throw new Exception("Object not found!");
+        }  
+
+        $object->status = AddressModel::sDisable;
+
+        return $repository->store($object);
+    }
+
+    public static function addressExists($id){
+        $repository = new AddressRepository();        
+
+        $object = $repository->findByPrimaryKey($id);
+
+        return !$object ? false : true;
     }
 
 }

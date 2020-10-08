@@ -4,10 +4,10 @@
 class StatusCodeOK extends ActionResult
 {
     
-    public function __construct(string $response = "")
+    public function __construct($response)
     {       
         $this->statuscode = 200;
-        parent::__construct($response);
+        parent::__construct(json_encode(["status" => "success", "code" => $this->statuscode, "response" => $response]));
     }
     
 }

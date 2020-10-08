@@ -9,18 +9,23 @@ class CustomerController
         try {
 
             $request = new POSTANDPUTCustomerV1Request();
-            $request->setValues($parameters);
+            $request->setValues($parameters);            
             $request->validate();
 
             $model = new CustomerModel();
+            $model->status = CustomerModel::sEnable;
             $model->setValues($request->getValues());
+
+            if($model->id > 0 && !CustomerService::customerExists($model->id)){
+                return new StatusCodeNotFound("Customer not found!");
+            }
 
             $model = CustomerService::store($model);
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                return new StatusCodeOK(json_encode(["Id" => $model->id]));
+                return new StatusCodeOK(["Id" => $model->id]);
             }else{
-                return new StatusCodeOK('');
+                return new StatusCodeOK(true);
             }
 
 
@@ -41,10 +46,10 @@ class CustomerController
             $response = CustomerService::findByPrimaryKey($request->Id);
 
             if(!$response){
-                return new StatusCodeNotFound("");
+                return new StatusCodeNotFound("Customer not found!");
             }
 
-            return new StatusCodeOK(json_encode($response->getValues()));
+            return new StatusCodeOK($response->getValues());
 
         } catch (Exception $e) 
         {
@@ -62,19 +67,21 @@ class CustomerController
             $data = CustomerService::loadAll($request->Page, $request->RecordsByPage);
 
             if(count($data) <= 0){
-                return new StatusCodeNotFound("");
+                return new StatusCodeNotFound("Customer not found!");
             }
 
             $response = new PaginationTemplateResponse();
             $response->Page = $request->Page;            
             $response->RecordsByPage = $request->RecordsByPage;     
             $response->TotalRecords = CustomerService::countAllRecords();  
-            
+                        
             $pages = Math::truncate($response->TotalRecords / $response->RecordsByPage);            
             $response->TotalPages = ($response->TotalRecords % $response->RecordsByPage) > 0 ? $pages + 1 : $pages;
             $response->Data = $data;
+            $response->NextPage = $response->TotalPages > $response->Page ? $response->Page + 1 : $response->Page;
+            $response->PriorPage = $response->Page > 1 ? $response->Page - 1 : 1;
 
-            return new StatusCodeOK(json_encode($response));
+            return new StatusCodeOK($response);
 
         } catch (Exception $e) 
         {
@@ -90,9 +97,13 @@ class CustomerController
             $request->setValues($parameters);
             $request->validate();
 
+            if(!CustomerService::customerExists($request->Id)){
+                return new StatusCodeNotFound("Customer not found!");
+            }
+
             CustomerService::delete($request->Id);
 
-            return new StatusCodeOK();
+            return new StatusCodeOK(true);
 
         } catch (Exception $e) 
         {

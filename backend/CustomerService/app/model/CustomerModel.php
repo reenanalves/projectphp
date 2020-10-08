@@ -8,7 +8,7 @@ class CustomerModel extends Model{
     public function __construct()
     {          
         $this->primarykey = "id";
-        $this->setProperty("id", [new RequireValidator()]); 
+        $this->setProperty("id", []); 
         $this->setProperty("name", [new RequireValidator(), new MinLengthValidator(10), new MaxLengthValidator(30)]); 
         $this->setProperty("birthday", [new RequireValidator(), new DateValidator()]); 
         $this->setProperty("document_cpf", [new RequireValidator(), new CPFValidator()]); 

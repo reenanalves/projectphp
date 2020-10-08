@@ -1,9 +1,11 @@
 <?php
 
 class PaginationTemplateResponse{
-    public int $Page;
-    public int $TotalRecords;
-    public int $TotalPages;
-    public int $RecordsByPage;
-    public array $Data = [];
+    public $Page;
+    public $NextPage;
+    public $PriorPage;
+    public $TotalRecords;
+    public $TotalPages;
+    public $RecordsByPage;
+    public $Data = [];
 }

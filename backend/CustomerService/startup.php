@@ -19,14 +19,14 @@ class StartUp
             $HTTPVerbRequest = $_SERVER['REQUEST_METHOD'];
 
             if (!isset($router->{$HTTPVerbRequest}[$URI])) {                
-                return new StatusCodeNotFound("");
+                return new StatusCodeNotFound("Route not found!");
             }
             
             $route = $router->$HTTPVerbRequest[$URI];
 
             if ($route->getAuthenticate()) {                
                 if (!isset($headers['Token']) or !AuthenticateService::Authenticate($headers['Token'])) {
-                    return new StatusCodeUnauthorized("");
+                    return new StatusCodeUnauthorized("Token is invalid!");
                 }
                 $request["Token"] = $headers['Token'];
             }
@@ -43,4 +43,4 @@ class StartUp
 }
 
 Session::destroy();
-echo StartUp::init($_REQUEST)->response();
+StartUp::init($_REQUEST)->response();

@@ -4,10 +4,10 @@
 class StatusCodeInternalError extends ActionResult
 {
     
-    public function __construct(string $response)
+    public function __construct($response)
     {       
         $this->statuscode = 500;
-        parent::__construct($response);
+        parent::__construct(json_encode(["status" => "error", "code" => $this->statuscode, "response" => $response]));
     }
     
 }

@@ -17,103 +17,107 @@ class AddressRepository implements Repository
 
         $query = "";
 
-        if ($object->id > 0) {
-            $query = "INSERT INTO address (" . implode(",", $object->getProperties(false)) . ")" .
-                " VALUES (" . implode(',:', $object->getProperties(false)) . ") ";
-        } else {
-            $query = "UPDATE address SET " . $object->getParamsToUpdateQuery(false) . " WHERE id = :id";
+        if(!$object->id){
+            $query = "INSERT INTO address (".implode(",",$object->getProperties(false)).")".
+                     " VALUES (".implode(',', $object->getParamsToQuery(false)).") ";
         }
+        else{
+            $query = "UPDATE address SET ".implode(",",$object->getParamsToUpdateQuery(false)). " WHERE id = :id";
+        }        
 
-        $queryResult = $this->connection->execQuery($query, $object->getValuesParamsToQuery($object->id), !$object->id);
+        $queryResult = $this->connection->execQuery( $query, $object->getValuesParamsToQuery($object->id), !$object->id);
 
-        if (!$object->id) {
-            $object->id = $queryResult;
-        }
+        if($queryResult)
+        {
+            
+            if(!$object->id){
+                $object->id = $queryResult;
+            }
 
-        return $object;
+            return $object;
+        }   
+
+        throw new Exception( !$object->id ? " Fail in insert!" : " Fail in update!");
     }
 
     public function loadAll($limit, $offset)
     {
 
-        $query = 'SELECT * FROM address WHERE status = :status LIMIT :limit OFFSET :offset';
-
-        $queryResult = $this->connection->execQuery($query, [':limit' => $limit, ':offset' => $offset, ':status' => AddressModel::sEnable]);
-
-        $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($queryResult) {
-
-            if (count($object) > 0) {
+        $query = "SELECT * FROM address WHERE status = :status LIMIT ".$limit." OFFSET ".$offset;        
+        $queryResult = $this->connection->execQuery( $query, [':status'=> AddressModel::sEnable]);
+        
+        if($queryResult)
+        {
+            $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
+            if(count($object) > 0){
 
                 $data = [];
 
-                foreach ($object as $key => $value) {
-                    $data[] = Utils::convertObjectToArray($value);
-                }
+                foreach($object as $key => $value)
+                {
+                    $data[] = Utils::convertObjectToArray($value); 
+                }                              
 
                 return $data;
             }
         }
-        return [];
+        return [];  
     }
 
     public function findLastId()
     {
 
         $query = 'SELECT max(id) as id FROM address';
+        
+        $queryResult = $this->connection->execQuery( $query );
 
-        $queryResult = $this->connection->execQuery($query);
-
-        if ($queryResult) {
-
+        if($queryResult){
             $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
 
-            if (count($object) > 0) {
+            if(count($object) > 0){
 
-                $data = Utils::convertObjectToArray($object[0]);
+                $data = Utils::convertObjectToArray($object[0]);        
 
                 return $data["id"];
             }
         }
 
-        return null;
+        return null;  
     }
 
     public function countAllRecords()
     {
 
         $query = 'SELECT count(id) as count FROM address';
+        
+        $queryResult = $this->connection->execQuery( $query );
 
-        $queryResult = $this->connection->execQuery($query);
-
-        if ($queryResult) {
-
+        if($queryResult){
             $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
 
-            if (count($object) > 0) {
+            if(count($object) > 0){
 
-                $data = Utils::convertObjectToArray($object[0]);
+                $data = Utils::convertObjectToArray($object[0]);        
 
                 return $data["count"];
+
             }
         }
-        return null;
+        return null;  
     }
 
     public function findByPrimaryKey($id)
     {
         $query = 'SELECT * FROM address WHERE id = :id and status = :status LIMIT 1';
+        
+        $queryResult = $this->connection->execQuery( $query, [':id' => $id, ':status'=>AddressModel::sEnable]);
 
-        $queryResult = $this->connection->execQuery($query, [':id' => $id, ':status' => AddressModel::sEnable]);
-
-        if ($queryResult) {
-
+        if($queryResult){
             $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
 
-            if (count($object) > 0) {
+            if(count($object) > 0){
 
-                $data = Utils::convertObjectToArray($object[0]);
+                $data = Utils::convertObjectToArray($object[0]);        
 
                 $address = new AddressModel();
                 $address->setValues($data);
@@ -121,7 +125,8 @@ class AddressRepository implements Repository
                 return $address;
             }
         }
-        return null;
+
+        return null;  
     }
 
     public function delete($id)

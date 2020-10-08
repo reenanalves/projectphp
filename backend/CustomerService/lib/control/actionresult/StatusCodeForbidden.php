@@ -4,10 +4,10 @@
 class StatusCodeForbidden extends ActionResult
 {
     
-    public function __construct(string $response)
+    public function __construct($response)
     {       
         $this->statuscode = 403;
-        parent::__construct($response);
+        parent::__construct(json_encode(["status" => "error", "code" => $this->statuscode, "response" => $response]));
     }
     
 }

@@ -42,4 +42,4 @@ class StartUp
     }
 }
 
-echo StartUp::init($_REQUEST)->response();
+ StartUp::init($_REQUEST)->response();

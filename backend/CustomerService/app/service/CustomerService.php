@@ -14,8 +14,11 @@ class CustomerService{
     }
 
     public static function loadAll($page, $limit){
+
         $repository = new CustomerRepository();
-        return $repository->loadAll($limit, ($page * $limit) - $limit);
+
+        return $repository->loadAll($limit, $page > 1 ? ($page * $limit) - $limit : 0);
+        
     }
 
     public static function countAllRecords(){
@@ -24,8 +27,26 @@ class CustomerService{
     }
 
     public static function delete($id){
-        $repository = new CustomerRepository();
-        return $repository->delete($id);
+        $repository = new CustomerRepository();        
+
+        $object = $repository->findByPrimaryKey($id);
+
+        if(!$object){
+            throw new Exception("Object not found!");
+        }  
+
+        $object->status = CustomerModel::sDisable;
+
+        return $repository->store($object);
+        
+    }
+
+    public static function customerExists($id){
+        $repository = new CustomerRepository();        
+
+        $object = $repository->findByPrimaryKey($id);
+
+        return !$object ? false : true;
     }
 
 }

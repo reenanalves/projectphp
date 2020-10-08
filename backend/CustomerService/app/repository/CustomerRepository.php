@@ -16,10 +16,10 @@ class CustomerRepository implements Repository{
 
         if(!$object->id){
             $query = "INSERT INTO customer (".implode(",",$object->getProperties(false)).")".
-                     " VALUES (".implode(',:', $object->getProperties(false)).") ";
+                     " VALUES (".implode(',', $object->getParamsToQuery(false)).") ";
         }
         else{
-            $query = "UPDATE customer SET ".$object->getParamsToUpdateQuery(false). " WHERE id = :id";
+            $query = "UPDATE customer SET ".implode(",",$object->getParamsToUpdateQuery(false)). " WHERE id = :id";
         }        
 
         $queryResult = $this->connection->execQuery( $query, $object->getValuesParamsToQuery($object->id), !$object->id);
@@ -34,19 +34,16 @@ class CustomerRepository implements Repository{
             return $object;
         }   
 
-        throw new Exception("Fail in insert!");
+        throw new Exception( !$object->id ? " Fail in insert!" : " Fail in update!");
     }
 
     public function loadAll($limit, $offset){
-
-        $query = 'SELECT * FROM customer WHERE status = :status LIMIT :limit OFFSET :offset';
+        $query = "SELECT * FROM customer WHERE status = :status LIMIT ".$limit." OFFSET ".$offset;        
+        $queryResult = $this->connection->execQuery( $query, [':status'=> CustomerModel::sEnable]);
         
-        $queryResult = $this->connection->execQuery( $query, [':limit' => $limit, ':offset' => $offset, ':status'=>CustomerModel::sEnable]);
-
-        if($queryResult){
-
+        if($queryResult)
+        {
             $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
-
             if(count($object) > 0){
 
                 $data = [];
