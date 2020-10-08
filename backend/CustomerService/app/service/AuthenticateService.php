@@ -16,12 +16,12 @@ class AuthenticateService{
 
         $response = HttpRequest::request($url_resquest,'POST', $params);
 
-        if($response["Code"] == "200")
+        if($response["Body"]->code == "200")
         {
             
-            Session::set("userid", $response["Body"]->id);
-            Session::set("username", $response["Body"]->name);
-            Session::set("userlogin", $response["Body"]->user);
+            Session::set("userid", $response["Body"]->response->id);
+            Session::set("username", $response["Body"]->response->name);
+            Session::set("userlogin", $response["Body"]->response->user);
 
             return true;
         }
