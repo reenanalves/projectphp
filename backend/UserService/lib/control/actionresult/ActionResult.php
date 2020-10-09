@@ -5,7 +5,7 @@ abstract class ActionResult
     public  $statuscode;
     private $content;
 
-    public function __construct(string $content){    
+    public function __construct($content){    
         $this->content = $content;            
     }
 
@@ -17,14 +17,15 @@ abstract class ActionResult
         }
 
         try{
-            json_encode($this->content);
+            $this->content = json_encode($this->content);
             header('Content-Type: application/json');
         }catch(Exception $e){
 
         }
 
-        echo $this->content;
-        http_response_code($this->statuscode);        
+        
+        http_response_code($this->statuscode);  
+        echo $this->content;      
     }
 
 }

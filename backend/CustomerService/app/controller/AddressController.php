@@ -27,7 +27,7 @@ class AddressController
             $model = AddressService::store($model);
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                return new StatusCodeOK(["Id" => $model->id]);
+                return new StatusCodeCreated(["Id" => $model->id]);
             }else{
                 return new StatusCodeOK(true);
             }
