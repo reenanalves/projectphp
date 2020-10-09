@@ -17,7 +17,7 @@ class StartUp
             $URL = new URL();
             $URI = $URL->getURI();
             $HTTPVerbRequest = $_SERVER['REQUEST_METHOD'];
-
+            
             if (!isset($router->{$HTTPVerbRequest}[$URI])) {                
                 return new StatusCodeNotFound("Route not found!");
             }

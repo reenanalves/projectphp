@@ -16,11 +16,10 @@ abstract class ActionResult
             throw new Exception("Status Code Invalid");
         }
 
-        if(is_array($this->content)){
+        if(is_array($this->content) OR is_object($this->content)){
             $this->content = json_encode($this->content);
             header('Content-Type: application/json');
         }
-
         
         http_response_code($this->statuscode);  
         echo $this->content;      
