@@ -1,11 +1,11 @@
 <?php
 
 
-class POSTANDPUTCustomerV1Request extends Model
+class PUTCustomerV1Request extends Model
 {
     public function __construct()
     {
-        $this->setProperty("id", []); 
+        $this->setProperty("id", [new RequireValidator()]); 
         $this->setProperty("name", [new RequireValidator(), new MinLengthValidator(10), new MaxLengthValidator(30)]); 
         $this->setProperty("birthday", [new RequireValidator(), new DateValidator()]); 
         $this->setProperty("document_cpf", [new RequireValidator(), new CPFValidator()]); 

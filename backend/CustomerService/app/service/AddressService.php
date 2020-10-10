@@ -13,14 +13,14 @@ class AddressService{
         return $repository->findByPrimaryKey($id);
     }
 
-    public static function loadAll($page, $limit){
+    public static function loadAll($idCustomer, $page, $limit){
         $repository = new AddressRepository();
-        return $repository->loadAll($limit, $page > 1 ? ($page * $limit) - $limit : 0);
+        return $repository->loadAll($idCustomer, $limit, $page > 1 ? ($page * $limit) - $limit : 0);
     }
 
-    public static function countAllRecords(){
+    public static function countAllRecords($idCustomer){
         $repository = new AddressRepository();
-        return $repository->countAllRecords();
+        return $repository->countAllRecords($idCustomer);
     }
 
     public static function delete($id){

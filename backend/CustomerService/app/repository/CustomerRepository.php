@@ -1,7 +1,7 @@
 <?php
 
 
-class CustomerRepository implements Repository{
+class CustomerRepository {
     
 
     private $connection; 

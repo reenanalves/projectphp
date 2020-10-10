@@ -4,11 +4,11 @@
 class CustomerController
 {
 
-    public function POSTANDPUTCustomerV1($parameters)
+    public function POSTCustomerV1($parameters)
     {
         try {
 
-            $request = new POSTANDPUTCustomerV1Request();
+            $request = new POSTCustomerV1Request();
             $request->setValues($parameters);            
             $request->validate();
 
@@ -22,11 +22,35 @@ class CustomerController
 
             $model = CustomerService::store($model);
 
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                return new StatusCodeCreated(["Id" => $model->id]);
-            }else{
-                return new StatusCodeOK("");
+            
+            return new StatusCodeCreated(["Id" => $model->id]);
+
+
+        } catch (Exception $e) 
+        {
+            return new StatusCodeBadRequest($e->getMessage());
+        }
+    }
+
+    public function PUTCustomerV1($parameters)
+    {
+        try {
+
+            $request = new PUTCustomerV1Request();
+            $request->setValues($parameters);            
+            $request->validate();
+
+            $model = new CustomerModel();
+            $model->status = CustomerModel::sEnable;
+            $model->setValues($request->getValues());
+
+            if($model->id > 0 && !CustomerService::customerExists($model->id)){
+                return new StatusCodeNotFound("Customer not found!");
             }
+
+            $model = CustomerService::store($model);
+
+            return new StatusCodeOK("");
 
 
         } catch (Exception $e) 

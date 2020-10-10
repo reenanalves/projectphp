@@ -88,10 +88,10 @@ export class AddressService {
 
   }
 
-  public getAddresses(RecordsByPage: number, Page: number): Promise<Pagination<Address>> {
+  public getAddresses(RecordsByPage: number, Page: number, idCustomer: number): Promise<Pagination<Address>> {
 
     return new Promise<Pagination<Address>>((resolve, reject) => {
-      this.http.get<Pagination<Address>>(`${this.api.getUrlCustomerService()}/addresses/v1/?RecordsByPage=${RecordsByPage}&Page=${Page}`, { headers: this.authenticate.getHeader() })
+      this.http.get<Pagination<Address>>(`${this.api.getUrlCustomerService()}/addresses/v1/?IdCustomer=${idCustomer}&RecordsByPage=${RecordsByPage}&Page=${Page}`, { headers: this.authenticate.getHeader() })
         .subscribe((data) => {
           resolve(data);
         }, ((error) => {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { Address } from '../../../models/address';
 import { Pagination } from '../../../models/pagination';
@@ -10,6 +10,8 @@ import { AddressService } from '../../../services/address.service';
   styleUrls: ['./customer-address-list.component.css']
 })
 export class CustomerAddressListComponent implements OnInit {
+
+  @Input() idCustomer: number;
 
   isShowAddress: boolean = false;
   idAddressEditing : number = 0;
@@ -27,7 +29,7 @@ export class CustomerAddressListComponent implements OnInit {
 
   getAddressess(page){
 
-    this.addressService.getAddresses(this.recordsByPage, page).
+    this.addressService.getAddresses(this.recordsByPage, page, this.idCustomer).
     then(value => {
       this.page = page;
       this.addresses = value;
@@ -53,6 +55,15 @@ export class CustomerAddressListComponent implements OnInit {
     this.isShowAddress = true;
   }
 
+  onDeleteAddress(id){
+    this.addressService.deleteAddress(id).then(value =>{
+      alert("Endereço deletado com sucesso!");
+      this.getAddressess(this.page);
+    }).catch(error => {
+      alert("Erro ao deletar o endereço. " + error.error);
+    });
+  }
+
   onNewAddress() {
     this.idAddressEditing = undefined;
     this.isShowAddress = true;
@@ -60,5 +71,8 @@ export class CustomerAddressListComponent implements OnInit {
 
   onHideAddress(event){
     this.isShowAddress = !event;
+    this.getAddressess(this.page);
   }
+
+  
 }

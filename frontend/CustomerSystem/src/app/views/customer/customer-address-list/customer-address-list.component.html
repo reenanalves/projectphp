@@ -1,5 +1,5 @@
 <div *ngIf="isShowAddress == true; else elseBlock">
-    <app-customer-address [idAddress]="idAddressEditing" (closeAddress)="onHideAddress($event);" ></app-customer-address>
+    <app-customer-address [idCustomer]="idCustomer" [idAddress]="idAddressEditing" (closeAddress)="onHideAddress($event);" ></app-customer-address>
 </div>
 <ng-template #elseBlock>
     <div class="card">
@@ -18,6 +18,7 @@
                         <th>Complemento</th>
                         <th>Cidade</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,7 +29,11 @@
                         <td>{{address.city}}, {{address.state}}</td>
                         <td>
                             <a (click)="onEditAddress(address.id)" style="font-size: 18px;"><i
-                                    class="cui-pencil icons cursor-pointer"></i></a>
+                                    class="cui-pencil icons " style="cursor: pointer;"></i></a>
+                        </td>
+                        <td>
+                            <a (click)="onDeleteAddress(address.id)" style="font-size: 18px;"><i
+                                    class="cui-trash icons " style="cursor: pointer;"></i></a>
                         </td>
                     </tr>
                 </tbody>

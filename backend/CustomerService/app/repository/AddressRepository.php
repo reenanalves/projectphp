@@ -1,7 +1,7 @@
 <?php
 
 
-class AddressRepository implements Repository
+class AddressRepository 
 {
 
 
@@ -40,11 +40,11 @@ class AddressRepository implements Repository
         throw new Exception( !$object->id ? " Fail in insert!" : " Fail in update!");
     }
 
-    public function loadAll($limit, $offset)
+    public function loadAll($IdCustomer, $limit, $offset)
     {
 
-        $query = "SELECT * FROM address WHERE status = :status LIMIT ".$limit." OFFSET ".$offset;        
-        $queryResult = $this->connection->execQuery( $query, [':status'=> AddressModel::sEnable]);
+        $query = "SELECT * FROM address WHERE status = :status and customer_id = :customer_id LIMIT ".$limit." OFFSET ".$offset;        
+        $queryResult = $this->connection->execQuery( $query, [':status'=> AddressModel::sEnable, ':customer_id' => $IdCustomer]);
         
         if($queryResult)
         {
@@ -85,12 +85,12 @@ class AddressRepository implements Repository
         return null;  
     }
 
-    public function countAllRecords()
+    public function countAllRecords($IdCustomer)
     {
 
-        $query = 'SELECT count(id) as count FROM address where status = :status';
+        $query = 'SELECT count(id) as count FROM address where status = :status and customer_id = :customer_id ';
         
-        $queryResult = $this->connection->execQuery( $query , [':status' => AddressModel::sEnable]);
+        $queryResult = $this->connection->execQuery( $query , [':status' => AddressModel::sEnable, ':customer_id' => $IdCustomer]);
 
         if($queryResult){
             $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);
@@ -105,6 +105,7 @@ class AddressRepository implements Repository
         }
         return null;  
     }
+    
 
     public function findByPrimaryKey($id)
     {

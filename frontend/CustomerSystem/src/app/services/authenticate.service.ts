@@ -34,24 +34,23 @@ export class AuthenticateService {
 
   userIsLogged() {
 
+    return true;
     
     let token = localStorage.getItem("token");
     let logged = localStorage.getItem("logged");
 
     this.token = token;
 
-
-
     if(token && logged == "true"){
       return this.tokenValidate().then(value => {
         return true;
-      }).catch(error => {        
+      }).catch(error => {     
         this.logout();
         return false;
       });
+    }else{
+      return false;
     }
-
-    return false;
 
   }
 

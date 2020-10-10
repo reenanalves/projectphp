@@ -50,6 +50,7 @@ export class CustomerComponent implements OnInit {
       }
 
       if (!this.isEditing) {
+        this.customer.status = 1;
         this.customerService.postCustomer(this.customer).
           then(value => {
             alert("Cliente cadastrado com sucesso!");

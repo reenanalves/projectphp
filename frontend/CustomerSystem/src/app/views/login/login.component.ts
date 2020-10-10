@@ -34,7 +34,7 @@ export class LoginComponent {
     }
 
     this.authenticateService.authenticate(this.user, this.pass).then(value => {
-      this.router.navigateByUrl("/");
+      this.router.navigateByUrl("");
     }).catch(error => {
       alert(error);
     });

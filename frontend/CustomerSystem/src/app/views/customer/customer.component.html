@@ -65,7 +65,7 @@
     </div>
 
     <div *ngIf="customer.id > 0;">
-        <app-customer-address-list></app-customer-address-list>
+        <app-customer-address-list [idCustomer]="customer.id"></app-customer-address-list>
     </div>
 
 </div>
