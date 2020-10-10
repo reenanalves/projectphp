@@ -5,7 +5,7 @@ Start Application
 docker-compose up -d
 
 Create New Migration
-docker container exec php ./vendor/bin/phinx create <NameMigration>
+docker container exec customerservice-php ./vendor/bin/phinx create <NameMigration>
 
 Migrate Database
-docker container exec php ./vendor/bin/phinx migrate
+docker container exec customerservice-php ./vendor/bin/phinx migrate
