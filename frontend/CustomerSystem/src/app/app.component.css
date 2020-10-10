@@ -1,0 +1,6 @@
+#toast-container > div {
+    opacity:1;
+}
+.toast {
+    opacity: 1 !important;
+}

@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthenticateService } from '../../services/authenticate.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class LoginComponent {
   @ViewChild('userInput') userInput: ElementRef;
   @ViewChild('passInput') passInput: ElementRef;
 
-  constructor(private router: Router, private authenticateService: AuthenticateService, private formBuilder: FormBuilder) {
+  constructor(private toastr: ToastrService, private router: Router, private authenticateService: AuthenticateService, private formBuilder: FormBuilder) {
     this.user = "";
     this.pass = "";
 
@@ -35,9 +36,19 @@ export class LoginComponent {
 
     this.authenticateService.authenticate(this.user, this.pass).then(value => {
       this.router.navigateByUrl("");
-    }).catch(error => {
-      alert(error);
+    }).catch(error => {      
+      this.notification('e', 'Erro', error);
     });
+  }
+
+  notification(type, title, message){
+    this.toastr.success(title, message);
+    if(type == "s"){
+      this.toastr.success(title, message);
+    }
+    else if (type == "e"){
+      this.toastr.warning(title, message);
+    }
   }
 
   onKeyUser(event) {

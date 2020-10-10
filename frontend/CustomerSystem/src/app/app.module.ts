@@ -26,6 +26,7 @@ const APP_CONTAINERS = [
 
 import {
   AppAsideModule,
+  
   AppBreadcrumbModule,
   AppHeaderModule,
   AppFooterModule,
@@ -47,12 +48,19 @@ import { CustomerService } from './services/customer.service';
 import { AuthenticateService } from './services/authenticate.service';
 import { ApiService } from './api.service';
 import { AddressService } from './services/address.service';
-import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './guards/auth.guard';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule, ToastContainerModule  } from 'ngx-toastr';
 
 @NgModule({
   imports: [
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right'
+    }),
+    ToastContainerModule,
+    NgxSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,

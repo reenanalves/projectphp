@@ -6,3 +6,27 @@
 
 // If you want to add something do it here
 @import "custom";
+
+
+
+/* TOASTR BUGFIX */
+#toast-container > div {
+    opacity: 1;
+  }
+  .toast {
+    font-size: initial !important;
+    border: initial !important;
+    backdrop-filter: blur(0) !important;
+  }
+  .toast-success {
+    background-color: #51A351 !important;
+  }
+  .toast-error {
+    background-color: #BD362F !important;
+  }
+  .toast-info {
+    background-color: #2F96B4 !important;
+  }
+  .toast-warning {
+    background-color: #F89406 !important;
+  }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Customer } from '../../models/customer';
 import { Pagination } from '../../models/pagination';
 import { CustomerService } from '../../services/customer.service';
+import {  NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-customer-list',
@@ -10,24 +12,47 @@ import { CustomerService } from '../../services/customer.service';
 })
 export class CustomerListComponent implements OnInit {
 
-  page : number = 0;
+  page : number;
   recordsByPage : number = 10;
   customers : Pagination<Customer> = new Pagination<Customer>();
 
-  constructor(private customerService : CustomerService) { }
+  constructor(private toastr: ToastrService, private customerService : CustomerService, private spinner: NgxSpinnerService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    this.page = 1;
     this.getCustomers(1);
   }
 
-  getCustomers(page){
+  onDeleteCustomer(id){
+    this.spinner.show();
+    this.customerService.deleteCustomer(id).then(value =>{      
+      this.spinner.hide();
+      this.notification("s", "Notificação", "Cliente deletado com sucesso!" );        
+      this.getCustomers(this.page);
+    }).catch(error => {
+      this.spinner.hide();
+      this.notification("s", "Notificação", "Não foi possível deletar este cliente!" );              
+    });
+  }
 
+  notification(type, title, message){
+    if(type == "s"){
+      this.toastr.success(message, title);
+    }
+    else if (type == "e"){
+      this.toastr.warning(message, title);
+    }
+  }
+
+  getCustomers(page){
+    this.spinner.show();
     this.customerService.getCustomers(this.recordsByPage, page).
     then(value => {
       this.page = page;
       this.customers = value;
+      this.spinner.hide();
     }).catch(error => {
-
+      this.spinner.hide();
     });
   }
 

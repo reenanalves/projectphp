@@ -33,8 +33,6 @@ export class AuthenticateService {
   }
 
   userIsLogged() {
-
-    return true;
     
     let token = localStorage.getItem("token");
     let logged = localStorage.getItem("logged");
@@ -64,7 +62,7 @@ export class AuthenticateService {
     return new Promise<any>((resolve, reject) => {
       this.http.post<Authenticate>(`${this.api.getUrlUserService()}/user/v1/Authenticate`, { "user": user, "pass": pass }, { headers: this.getHeader() })
         .subscribe((data) => {
-          this.logout();
+          
           this.token = data.Token;
           localStorage.setItem("token", this.token);
           localStorage.setItem("logged", "true");

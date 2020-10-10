@@ -1,5 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { Address } from '../../../models/address';
 import { Pagination } from '../../../models/pagination';
 import { AddressService } from '../../../services/address.service';
@@ -16,25 +18,27 @@ export class CustomerAddressListComponent implements OnInit {
   isShowAddress: boolean = false;
   idAddressEditing : number = 0;
 
-  page : number = 0;
+  page : number;
   recordsByPage : number = 10;
   addresses : Pagination<Address> = new Pagination<Address>();
 
-  constructor(private addressService : AddressService) { }
+  constructor(private toastr: ToastrService, private spinner: NgxSpinnerService, private addressService : AddressService) { }
   
 
   ngOnInit(): void {
+    this.page = 1;
     this.getAddressess(1)
   }
 
   getAddressess(page){
-
+    this.spinner.show();
     this.addressService.getAddresses(this.recordsByPage, page, this.idCustomer).
     then(value => {
       this.page = page;
       this.addresses = value;
+      this.spinner.hide();
     }).catch(error => {
-
+      this.spinner.hide();
     });
   }
 
@@ -55,12 +59,24 @@ export class CustomerAddressListComponent implements OnInit {
     this.isShowAddress = true;
   }
 
+  notification(type, title, message){
+    if(type == "s"){
+      this.toastr.success(message, title);
+    }
+    else if (type == "e"){
+      this.toastr.warning(message, title);
+    }
+  }
+
   onDeleteAddress(id){
+    this.spinner.show();
     this.addressService.deleteAddress(id).then(value =>{
-      alert("Endereço deletado com sucesso!");
+      this.notification("s", "Notificação", "Endereço deletado com sucesso!" );
+      this.spinner.hide();
       this.getAddressess(this.page);
     }).catch(error => {
-      alert("Erro ao deletar o endereço. " + error.error);
+      this.spinner.hide();
+      this.notification("e", "Erro", "Não foi possível deletar este endereço!" );
     });
   }
 
