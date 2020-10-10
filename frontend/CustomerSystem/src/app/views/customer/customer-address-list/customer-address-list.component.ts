@@ -38,6 +38,7 @@ export class CustomerAddressListComponent implements OnInit {
       this.addresses = value;
       this.spinner.hide();
     }).catch(error => {
+      this.addresses = new Pagination<Address>();
       this.spinner.hide();
     });
   }

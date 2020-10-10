@@ -30,9 +30,9 @@
 
                             <tr *ngFor="let customer of customers.Data">
                                 <td>{{customer.name}}</td>
-                                <td style="text-align: center;">{{customer.birthday}}</td>
-                                <td>{{customer.document_cpf}}</td>
-                                <td>{{customer.document_rg}}</td>
+                                <td style="text-align: center;">{{customer.birthday | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{customer.document_cpf | cpf}}</td>
+                                <td>{{customer.document_rg | rg}}</td>
                                 <td>{{customer.phone}}</td>
                                 <td>
                                     <a [routerLink]="['/customer/', customer.id]" style="font-size: 18px;"><i

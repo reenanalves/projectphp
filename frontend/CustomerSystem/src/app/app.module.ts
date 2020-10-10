@@ -52,6 +52,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './guards/auth.guard';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule, ToastContainerModule  } from 'ngx-toastr';
+import { CpfPipe } from './pipes/cpf.pipe';
+import { RgPipe } from './pipes/rg.pipe';
 
 @NgModule({
   imports: [
@@ -86,7 +88,9 @@ import { ToastrModule, ToastContainerModule  } from 'ngx-toastr';
     CustomerListComponent,
     CustomerComponent,
     CustomerAddressComponent,
-    CustomerAddressListComponent
+    CustomerAddressListComponent,
+    CpfPipe,
+    RgPipe
   ],
   providers: [{
     provide: LocationStrategy,

@@ -53,6 +53,7 @@ export class CustomerListComponent implements OnInit {
       this.spinner.hide();
     }).catch(error => {
       this.spinner.hide();
+      this.customers = new Pagination<Customer>();
     });
   }
 
