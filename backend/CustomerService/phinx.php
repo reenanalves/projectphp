@@ -19,6 +19,7 @@ return [
         $ini['database']['name'] => [
             'adapter' => 'mysql',
             'host' => $ini['database']['host'],
+            'port' => $ini['database']['port'],
             'name' => $ini['database']['name'],
             'user' => $ini['database']['user'],
             'pass' => $ini['database']['pass'],

@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="form-group col-md-9">
                         <label for="name">Nome</label>
-                        <input type="text" class="form-control" [(ngModel)]="customer.name" formControlName="name"
+                        <input type="text" class="form-control" maxlength="30" [(ngModel)]="customer.name" formControlName="name"
                             placeholder="Digite o Nome">
                         <div *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)"
                             class="alert alert-danger">
@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="form-group col-sm-4">
                         <label for="city">CPF</label>
-                        <input type="text" class="form-control" [(ngModel)]="customer.document_cpf"
+                        <input type="text" class="form-control" maxlength="15" [(ngModel)]="customer.document_cpf"
                             formControlName="document_cpf" placeholder="Digite o CPF">
                         <div *ngIf="form.controls['document_cpf'].invalid && (form.controls['document_cpf'].dirty || form.controls['document_cpf'].touched)"
                             class="alert alert-danger">
@@ -38,7 +38,7 @@
                     <div class="form-group col-sm-4">
                         <label for="postal-code">RG</label>
                         <input type="text" class="form-control" [(ngModel)]="customer.document_rg"
-                            formControlName="document_rg" placeholder="Digite o RG">
+                            formControlName="document_rg" maxlength="30" placeholder="Digite o RG">
                         <div *ngIf="form.controls['document_rg'].invalid && (form.controls['document_rg'].dirty || form.controls['document_rg'].touched)"
                             class="alert alert-danger">
                             RG é obrigatório.
@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="country">Telefone</label>
-                        <input type="text" class="form-control" [(ngModel)]="customer.phone" formControlName="phone"
+                        <input type="text" class="form-control" maxlength="20" [(ngModel)]="customer.phone" formControlName="phone"
                             placeholder="Digite o Telefone">
                             <div *ngIf="form.controls['phone'].invalid && (form.controls['phone'].dirty || form.controls['phone'].touched)"
                             class="alert alert-danger">

@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="form-group col-md-10">
                     <label for="company">Rua</label>
-                    <input type="text" class="form-control" [(ngModel)]="address.street" formControlName="street" placeholder="Digite a Rua">
+                    <input type="text" class="form-control" maxlength="100" [(ngModel)]="address.street" formControlName="street" placeholder="Digite a Rua">
                     <div *ngIf="form.controls['street'].invalid && (form.controls['street'].dirty || form.controls['street'].touched)"
                         class="alert alert-danger">
                         Rua é obrigatório.
@@ -15,7 +15,7 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="vat">Número</label>
-                    <input type="text" class="form-control" [(ngModel)]="address.number" formControlName="number" placeholder="Digite o Número">
+                    <input type="text" class="form-control" maxlength="20" [(ngModel)]="address.number" formControlName="number" placeholder="Digite o Número">
                     <div *ngIf="form.controls['number'].invalid && (form.controls['number'].dirty || form.controls['number'].touched)"
                         class="alert alert-danger">
                         Número é obrigatório.
@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="form-group col-md-8">
                     <label for="street">Bairro</label>
-                    <input type="text" class="form-control" [(ngModel)]="address.district" formControlName="district" placeholder="Digite o Bairro">
+                    <input type="text" class="form-control" maxlength="100" [(ngModel)]="address.district" formControlName="district" placeholder="Digite o Bairro">
                     <div *ngIf="form.controls['district'].invalid && (form.controls['district'].dirty || form.controls['district'].touched)"
                         class="alert alert-danger">
                         Bairro é obrigatório.
@@ -33,14 +33,14 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="street">Complemento</label>
-                    <input type="text" class="form-control" [(ngModel)]="address.complement" formControlName="complement"
+                    <input type="text" class="form-control" maxlength="30" [(ngModel)]="address.complement" formControlName="complement"
                         placeholder="Digite o Complemento">
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-sm-8">
                     <label for="city">Cidade</label>
-                    <input type="text" class="form-control" [(ngModel)]="address.city" formControlName="city" placeholder="Digite a Cidade">
+                    <input type="text" class="form-control" maxlength="20" [(ngModel)]="address.city" formControlName="city" placeholder="Digite a Cidade">
                     <div *ngIf="form.controls['city'].invalid && (form.controls['city'].dirty || form.controls['city'].touched)"
                         class="alert alert-danger">
                         Cidade é obrigatório.

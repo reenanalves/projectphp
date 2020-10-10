@@ -82,7 +82,6 @@ export class CustomerComponent implements OnInit {
             this.notification('s', 'Notificação', 'Cliente salvo com sucesso!');
           }).
           catch(error => {
-            this.spinner.hide();
             this.error(error.error);
           });
       }
@@ -93,6 +92,7 @@ export class CustomerComponent implements OnInit {
   }
 
   error(error){
+    this.spinner.hide();
     this.notification('e', 'Erro', error);
   }
 

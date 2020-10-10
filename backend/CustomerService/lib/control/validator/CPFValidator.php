@@ -7,7 +7,7 @@ class CPFValidator implements Validator{
     }
 
     public function throwException(){
-        throw new Exception("CPF is invalid!");
+        throw new Exception("CPF inválido!");
     }
 
     public function validate($field, $value)

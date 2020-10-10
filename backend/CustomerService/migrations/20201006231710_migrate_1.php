@@ -39,6 +39,10 @@ final class Migrate1 extends AbstractMigration
             `phone` varchar(20) NOT NULL,
             `status` int(11) NOT NULL
           ) ENGINE=MyISAM DEFAULT CHARSET=latin1");
+
+$this->execute("ALTER TABLE `customer` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`)");
+
+$this->execute("ALTER TABLE `address` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`)");
     }
 
     public function down(): void
