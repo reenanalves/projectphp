@@ -81,9 +81,9 @@ class CustomerRepository implements Repository{
 
     public function countAllRecords(){
         
-        $query = 'SELECT count(id) as count FROM customer';
+        $query = 'SELECT count(id) as count FROM customer where status = :status';
         
-        $queryResult = $this->connection->execQuery( $query );
+        $queryResult = $this->connection->execQuery( $query , [':status' => CustomerModel::sEnable]);
 
         if($queryResult){
             $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);

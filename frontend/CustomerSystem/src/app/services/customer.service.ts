@@ -1,79 +1,106 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Customer } from '../models/customer';
-import { GetCustomer } from '../responses/getcustomer';
-import { GetCustomers } from '../responses/getcustomers';
 import { ApiService } from '../api.service';
+import { Pagination } from '../models/pagination';
+import { AuthenticateService } from './authenticate.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
 
-  constructor(private http: HttpClient, private api: ApiService) {
+  constructor(private router: Router, private http: HttpClient, private authenticate: AuthenticateService, private api: ApiService) {
 
   }
 
-  public postCustomer(customer: Customer): Promise<GetCustomer> {
+  public postCustomer(customer: Customer): Promise<any> {
 
-    return new Promise<GetCustomer>((resolve, reject) => {
-      this.api.getHeader().then((headers) => {
-        this.http.post(`${this.api.getUrlCustomerService()}/customer/v1/`, customer, { headers: headers })
-          .subscribe((data) => {
-            resolve(data);
-          }, ((error) => { reject(error); }));
-      });
+    return new Promise<any>((resolve, reject) => {
+      this.http.post(`${this.api.getUrlCustomerService()}/customer/v1/`, customer, { headers: this.authenticate.getHeader() })
+        .subscribe((data) => {
+          resolve(data);
+        }, ((error) => {
+
+          if (error.status == 401) {
+            this.router.navigateByUrl("/login");
+          } else {
+            reject(error);
+          }
+
+        }));
     });
   }
 
-  public putCustomer(customer: Customer): Promise<GetCustomer> {
+  public putCustomer(customer: Customer): Promise<any> {
 
-    return new Promise<GetCustomer>((resolve, reject) => {
-      this.api.getHeader().then((headers) => {
-        this.http.put(`${this.api.getUrlCustomerService()}/customer/v1/`, customer, { headers: headers })
-          .subscribe((data) => {
-            resolve(data);
-          }, ((error) => { reject(error); }));
-      });
-    });
-
-  }
-
-  public deleteCustomer(id : number): Promise<GetCustomer> {
-
-    return new Promise<GetCustomer>((resolve, reject) => {
-      this.api.getHeader().then((headers) => {
-        this.http.delete(`${this.api.getUrlCustomerService()}/customer/v1/?Id=${id}`, { headers: headers })
-          .subscribe((data) => {
-            resolve(data);
-          }, ((error) => { reject(error); }));
-      });
+    return new Promise<any>((resolve, reject) => {
+      this.http.put(`${this.api.getUrlCustomerService()}/customer/v1/`, customer, { headers: this.authenticate.getHeader() })
+        .subscribe((data) => {
+          resolve(data);
+        }, ((error) => {
+          if (error.status == 401) {
+            this.router.navigateByUrl("/login");
+          } else {
+            reject(error);
+          }
+        }));
     });
 
   }
 
-  public getCustomer(id: number): Promise<GetCustomer> {
+  public deleteCustomer(id: number): Promise<any> {
 
-    return new Promise<GetCustomer>((resolve, reject) => {
-      this.api.getHeader().then((headers) => {
-        this.http.get<GetCustomer>(`${this.api.getUrlCustomerService()}/customer/v1/?Id=${id}`, { headers: headers })
-          .subscribe((data) => {
-            resolve(data);
-          }, ((error) => { reject(error); }));
-      });
+    return new Promise<any>((resolve, reject) => {
+      this.http.delete(`${this.api.getUrlCustomerService()}/customer/v1/?Id=${id}`, { headers: this.authenticate.getHeader() })
+        .subscribe((data) => {
+          resolve(data);
+        }, ((error) => {
+          if (error.status == 401) {
+            this.router.navigateByUrl("/login");
+          } else {
+            reject(error);
+          }
+        }));
     });
 
   }
 
-  public getCustomers(RecordsByPage: number, Page: number): Promise<GetCustomers> {
+  public getCustomer(id: number): Promise<Customer> {
 
-    return new Promise<GetCustomer>((resolve, reject) => {
-      this.api.getHeader().then((headers) => {
-        this.http.get<GetCustomer>(`${this.api.getUrlCustomerService()}/customers/v1/?RecordsByPage=${RecordsByPage}&Page=${Page}`, { headers: headers })
-          .subscribe((data) => {
-            resolve(data);
-          }, ((error) => { reject(error); }));
-      });
+    return new Promise<Customer>((resolve, reject) => {
+      this.http.get<Customer>(`${this.api.getUrlCustomerService()}/customer/v1/?Id=${id}`,
+        { headers: this.authenticate.getHeader() })
+        .subscribe((data) => {
+          resolve(data);
+        }, ((error) => {
+
+          if (error.status == 401) {
+            this.router.navigateByUrl("/login");
+          } else {
+            reject(error);
+          }
+
+        }));
+
+    });
+
+  }
+
+  public getCustomers(RecordsByPage: number, Page: number): Promise<Pagination<Customer>> {
+
+    return new Promise<Pagination<Customer>>((resolve, reject) => {
+      this.http.get<Pagination<Customer>>(`${this.api.getUrlCustomerService()}/customers/v1/?RecordsByPage=${RecordsByPage}&Page=${Page}`, { headers: this.authenticate.getHeader() })
+        .subscribe((data) => {
+          resolve(data);
+        }, ((error) => {
+          if (error.status == 401) {
+            this.router.navigateByUrl("/login");
+          } else {
+            reject(error);
+          }
+        }));
     });
 
   }

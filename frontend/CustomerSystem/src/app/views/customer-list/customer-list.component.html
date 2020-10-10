@@ -7,12 +7,18 @@
                     <a [routerLink]="['/customer']" class="btn  float-right btn-primary" style="color: white;">Novo
                         Cliente</a>
                 </div>
+
                 <div class="card-body">
+
+                    
+                    <span>Mostrando {{customers.Data.length}} de {{customers.TotalRecords}} registros.</span>    
+                    
+
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>Data de Nascimento</th>
+                                <th style="text-align: center;">Data de Nascimento</th>
                                 <th>CPF</th>
                                 <th>RG</th>
                                 <th>Telefone</th>
@@ -20,58 +26,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Yiorgos Avraamu</td>
-                                <td>01/01/1998</td>
-                                <td>465.802.238-98</td>
-                                <td>54.255.598-0</td>
-                                <td>19 3445-1394</td>
+
+                            <tr *ngFor="let customer of customers.Data">
+                                <td>{{customer.name}}</td>
+                                <td style="text-align: center;">{{customer.birthday}}</td>
+                                <td>{{customer.document_cpf}}</td>
+                                <td>{{customer.document_rg}}</td>
+                                <td>{{customer.phone}}</td>
                                 <td>
-                                    <a [routerLink]="['/customer']" style="font-size: 18px;"><i
-                                            class="cui-pencil icons "></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Yiorgos Avraamu</td>
-                                <td>01/01/1998</td>
-                                <td>465.802.238-98</td>
-                                <td>54.255.598-0</td>
-                                <td>19 3445-1394</td>
-                                <td>
-                                    <a [routerLink]="['/customer']" style="font-size: 18px;"><i
-                                            class="cui-pencil icons "></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Yiorgos Avraamu</td>
-                                <td>01/01/1998</td>
-                                <td>465.802.238-98</td>
-                                <td>54.255.598-0</td>
-                                <td>19 3445-1394</td>
-                                <td>
-                                    <a [routerLink]="['/customer']" style="font-size: 18px;"><i
-                                            class="cui-pencil icons "></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Yiorgos Avraamu</td>
-                                <td>01/01/1998</td>
-                                <td>465.802.238-98</td>
-                                <td>54.255.598-0</td>
-                                <td>19 3445-1394</td>
-                                <td>
-                                    <a [routerLink]="['/customer']" style="font-size: 18px;"><i
-                                            class="cui-pencil icons "></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Yiorgos Avraamu</td>
-                                <td>01/01/1998</td>
-                                <td>465.802.238-98</td>
-                                <td>54.255.598-0</td>
-                                <td>19 3445-1394</td>
-                                <td>
-                                    <a [routerLink]="['/customer']" style="font-size: 18px;"><i
+                                    <a [routerLink]="['/customer/', customer.id]" style="font-size: 18px;"><i
                                             class="cui-pencil icons "></i></a>
                                 </td>
                             </tr>
@@ -79,16 +42,11 @@
 
                         </tbody>
                     </table>
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Próxima</a></li>
+                    <ul class="pagination">                        
+                        <li class="page-item"><a class="page-link" (click)="priorPage()" style="cursor: pointer;" >Anterior</a></li>                        
+                        <li class="page-item"><a class="page-link" (click)="nextPage()" style="cursor: pointer;">Próxima</a></li>                        
                     </ul>
+                    <span>Página {{page}}  de {{customers.TotalPages}} página(s).</span>
                 </div>
             </div>
         </div>

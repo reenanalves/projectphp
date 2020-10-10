@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
+import { Authenticate } from '../models/authenticate';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -8,68 +10,86 @@ import { ApiService } from '../api.service';
 export class AuthenticateService {
 
   private token: string;
+  private user: User;
 
   constructor(private api: ApiService, private http: HttpClient) { }
+
+
+
+  getHeader(): HttpHeaders {
+
+    let headers: HttpHeaders = new HttpHeaders();
+    if (this.getToken()) {
+      headers = headers.set("Token", this.getToken());
+    }
+    headers = headers.set("Content-Type", "application/json");
+
+    return headers;
+
+  }
 
   getToken() {
     return this.token;
   }
 
-  userIsLogged(){
+  userIsLogged() {
+
+    
+    let token = localStorage.getItem("token");
+    let logged = localStorage.getItem("logged");
+
+    this.token = token;
+
+
+
+    if(token && logged == "true"){
+      return this.tokenValidate().then(value => {
+        return true;
+      }).catch(error => {        
+        this.logout();
+        return false;
+      });
+    }
+
+    return false;
 
   }
 
-  tokenValidate(){
-    return new Promise<any>((resolve, reject) => {
-      this.api.getHeader().then((headers) => {
-        this.http.post(`${this.api.getUrlUserService()}/user/v1/Authenticate`, { "user": user, "pass": pass }, { headers: headers })
-          .subscribe((data) => {
-
-            this.token = data.token;
-            localStorage.setItem("token",this.token);
-            localStorage.setItem("logged","true");
-
-            resolve(true);            
-
-          },
-            ((error) => {
-              reject("Login ou senha incorretos!");
-            }));
-      });
-    });
+  logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("logged");
+    window.location.reload();
   }
 
   authenticate(user, pass): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.api.getHeader().then((headers) => {
-        this.http.post(`${this.api.getUrlUserService()}/user/v1/Authenticate`, { "user": user, "pass": pass }, { headers: headers })
-          .subscribe((data) => {
+      this.http.post<Authenticate>(`${this.api.getUrlUserService()}/user/v1/Authenticate`, { "user": user, "pass": pass }, { headers: this.getHeader() })
+        .subscribe((data) => {
+          this.logout();
+          this.token = data.Token;
+          localStorage.setItem("token", this.token);
+          localStorage.setItem("logged", "true");
 
-            this.token = data.token;
-            localStorage.setItem("token",this.token);
-            localStorage.setItem("logged","true");
+          resolve(true);
 
-            resolve(true);            
-
-          },
-            ((error) => {
-              reject("Login ou senha incorretos!");
-            }));
-      });
+        },
+          ((error) => {
+            reject("Login ou senha incorretos!");
+          }));
     });
   }
 
-  updateToken(): Promise<any> {
+  tokenValidate(): Promise<any> {
+
     return new Promise<any>((resolve, reject) => {
-      this.api.getHeader().then((headers) => {
-        this.http.post(`${this.api.getUrlUserService()}/user/v1/UpdateToken`,null, { headers: headers })
-          .subscribe((data) => {
-            resolve(data);
-          },
-            ((error) => {
-              reject(error);
-            }));
-      });
+      this.http.post<User>(`${this.api.getUrlUserService()}/user/v1/TokenValidate`, null, { headers: this.getHeader() })
+        .subscribe((data) => {
+          this.user = data;
+          resolve(true);
+        },
+          ((error) => {
+            reject(false);
+          }));
     });
   }
 

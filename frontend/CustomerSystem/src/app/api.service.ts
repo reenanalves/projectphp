@@ -1,28 +1,14 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
-import { AuthenticateService } from './services/authenticate.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  constructor(private authenticate: AuthenticateService) { }
+  constructor() { }
 
-  getHeader(): Promise<any> {
-
-    let headers: Headers = new Headers();
-
-    return new Promise<any>((resolve, reject) => {
-
-      headers.append("Token", this.authenticate.getToken());
-      headers.append("Content-Type", "application/json");
-
-      resolve(headers);
-
-    });
-
-  }
+  
 
   public getUrlCustomerService() {
     if (environment.dev) {

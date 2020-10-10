@@ -19,7 +19,6 @@ import { DefaultLayoutComponent } from './containers';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -44,9 +43,18 @@ import { CustomerListComponent } from './views/customer-list/customer-list.compo
 import { CustomerComponent } from './views/customer/customer.component';
 import { CustomerAddressComponent } from './views/customer/customer-address/customer-address.component';
 import { CustomerAddressListComponent } from './views/customer/customer-address-list/customer-address-list.component';
+import { CustomerService } from './services/customer.service';
+import { AuthenticateService } from './services/authenticate.service';
+import { ApiService } from './api.service';
+import { AddressService } from './services/address.service';
+import { Router } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -67,7 +75,6 @@ import { CustomerAddressListComponent } from './views/customer/customer-address-
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent,
     CustomerListComponent,
     CustomerComponent,
     CustomerAddressComponent,
@@ -75,8 +82,9 @@ import { CustomerAddressListComponent } from './views/customer/customer-address-
   ],
   providers: [{
     provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  }],
+    useClass: HashLocationStrategy,
+    
+  },CustomerService, AuthenticateService, ApiService, AddressService, AuthGuard],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

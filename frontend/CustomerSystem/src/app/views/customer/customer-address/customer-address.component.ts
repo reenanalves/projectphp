@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-customer-address',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerAddressComponent implements OnInit {
 
+  @Output() closeAddress: EventEmitter<boolean> = new EventEmitter();
+  @Input() idAddress: number;
+
   constructor() { }
 
   ngOnInit(): void {
+      if(this.idAddress){
+        alert(this.idAddress);
+      }
   }
+
+  onSaveAddress(){
+    this.closeAddress.emit(true);
+  }
+
+  onClose(){
+    this.closeAddress.emit(true);
+  }
+  
+  
 
 }

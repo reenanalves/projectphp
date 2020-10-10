@@ -29,7 +29,7 @@ class AddressController
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 return new StatusCodeCreated(["Id" => $model->id]);
             }else{
-                return new StatusCodeOK(true);
+                return new StatusCodeOK("");
             }
 
 
@@ -107,7 +107,7 @@ class AddressController
 
             AddressService::delete($request->Id);
 
-            return new StatusCodeOK(true);
+            return new StatusCodeOK("");
 
         } catch (Exception $e) 
         {

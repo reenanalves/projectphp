@@ -12,10 +12,10 @@ class AuthenticateService{
 
         $url_resquest = $ini["config"]["url_userservice"] . "user/v1/TokenValidate";
         
-        $params = ["Token" => $token];
+        $headers = ["Token:" . $token];
 
-        $response = HttpRequest::request($url_resquest,'POST', $params);
-
+        $response = HttpRequest::request($url_resquest,'POST', null,$headers);
+        
         if($response["Code"] == "200")
         {
             

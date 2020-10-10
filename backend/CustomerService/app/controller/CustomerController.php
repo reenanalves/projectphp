@@ -25,7 +25,7 @@ class CustomerController
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 return new StatusCodeCreated(["Id" => $model->id]);
             }else{
-                return new StatusCodeOK(true);
+                return new StatusCodeOK("");
             }
 
 
@@ -103,7 +103,7 @@ class CustomerController
 
             CustomerService::delete($request->Id);
 
-            return new StatusCodeOK(true);
+            return new StatusCodeOK("");
 
         } catch (Exception $e) 
         {

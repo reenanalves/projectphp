@@ -88,9 +88,9 @@ class AddressRepository implements Repository
     public function countAllRecords()
     {
 
-        $query = 'SELECT count(id) as count FROM address';
+        $query = 'SELECT count(id) as count FROM address where status = :status';
         
-        $queryResult = $this->connection->execQuery( $query );
+        $queryResult = $this->connection->execQuery( $query , [':status' => AddressModel::sEnable]);
 
         if($queryResult){
             $object = $queryResult->fetchAll(PDO::FETCH_ASSOC);

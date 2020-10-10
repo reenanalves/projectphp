@@ -1,1 +1,43 @@
-<p>customer-address-list works!</p>
+<div *ngIf="isShowAddress == true; else elseBlock">
+    <app-customer-address [idAddress]="idAddressEditing" (closeAddress)="onHideAddress($event);" ></app-customer-address>
+</div>
+<ng-template #elseBlock>
+    <div class="card">
+        <div class="card-header ">
+            <strong>Endereços</strong>
+            <a (click)="onNewAddress();" class="btn  float-right btn-primary" style="color: white;">Novo
+                Endereço</a>
+        </div>
+        <div class="card-body">
+            <span>Mostrando {{addresses.Data.length}} de {{addresses.TotalRecords}} registros.</span> 
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Rua</th>
+                        <th>Bairro</th>
+                        <th>Complemento</th>
+                        <th>Cidade</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let address of addresses.Data">
+                        <td>{{address.street}}, {{address.number}}</td>
+                        <td>{{address.district}}</td>
+                        <td>{{address.complement}}</td>
+                        <td>{{address.city}}, {{address.state}}</td>
+                        <td>
+                            <a (click)="onEditAddress(address.id)" style="font-size: 18px;"><i
+                                    class="cui-pencil icons cursor-pointer"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul class="pagination">                        
+                <li class="page-item"><a class="page-link" (click)="priorPage()" style="cursor: pointer;" >Anterior</a></li>                        
+                <li class="page-item"><a class="page-link" (click)="nextPage()" style="cursor: pointer;">Próxima</a></li>                        
+            </ul>
+            <span>Página {{page}}  de {{addresses.TotalPages}} página(s).</span>
+        </div>
+    </div>
+</ng-template>

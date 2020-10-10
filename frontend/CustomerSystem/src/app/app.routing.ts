@@ -3,20 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
+import { AuthGuard } from './guards/auth.guard';
 import { CustomerListComponent } from './views/customer-list/customer-list.component';
 import { CustomerComponent } from './views/customer/customer.component';
-
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  },
+
   {
     path: '404',
     component: P404Component,
@@ -41,12 +36,20 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
+    canActivate: [AuthGuard],
     data: {
-      title: 'Dashboard'
+      title: 'Home'
     },
     children: [      
       {
         path: 'customer',
+        component: CustomerComponent,
+        data: {
+          title: 'Cliente'
+        }
+      },
+      {
+        path: 'customer/:id',
         component: CustomerComponent,
         data: {
           title: 'Cliente'

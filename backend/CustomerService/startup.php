@@ -1,4 +1,8 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, Auth, Token, X-Requested-With');
 
 require_once 'init.php';
 require_once 'router.php';
@@ -19,7 +23,7 @@ class StartUp
             $HTTPVerbRequest = $_SERVER['REQUEST_METHOD'];
             
             if (!isset($router->{$HTTPVerbRequest}[$URI])) {                
-                return new StatusCodeNotFound("Route not found!");
+                return new StatusCodeOK("Route not found!");
             }
             
             $route = $router->$HTTPVerbRequest[$URI];
