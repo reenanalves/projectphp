@@ -35,19 +35,19 @@ export class LoginComponent {
     }
 
     this.authenticateService.authenticate(this.user, this.pass).then(value => {
+      this.notification('s', 'Notificação', "Login efetuado com sucesso!");
       this.router.navigateByUrl("");
     }).catch(error => {      
       this.notification('e', 'Erro', error);
     });
   }
 
-  notification(type, title, message){
-    this.toastr.success(title, message);
+  notification(type, title, message){    
     if(type == "s"){
-      this.toastr.success(title, message);
+      this.toastr.success(message,title );
     }
     else if (type == "e"){
-      this.toastr.warning(title, message);
+      this.toastr.warning(message, title);
     }
   }
 
