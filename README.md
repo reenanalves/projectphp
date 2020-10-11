@@ -14,7 +14,7 @@
 
 > Instalar o Angular execute o comando "npm install -g @angular/cli@9.1.1"
 
-##Configuração de Ambientes
+## Configuração de Ambientes
 
 **backend/CustomerService:**
 
@@ -79,3 +79,21 @@
 > Para configurar os links de acesso aos serviços da aplicação para os ambientes, acesse o arquivo: "frontend/CustomerSystem/src/app/api.service.ts"
 
 > Para iniciar a aplicação execute "ng serve", lembrando que este iniciará com o ambiente padrão configurado em "frontend/CustomerSystem/environments/environment.ts"
+
+## Documentação
+
+> O sistema foi separado em dois microserviços "PHP" e um frontend "Angular", sendo eles:
+
+**UserService:**
+> Serviço responsável por tratar as autenticações de usuários da API.
+
+**CustomerService**
+> Serviço responsável por tratar o cadastro de Clientes, tem como dependência o serviço "UserService", para autenticar os usuários da API.
+
+**CustomerSystem**
+> Interface de usuário do sistema de clientes.
+
+> A abordagem de microserviços foi escolhida visando a escalabilidade do sistema, assim então criando serviços independentes
+> com suas respectivas regras de negócio. 
+> Ambos serviços são Stateless, ou seja, não armazenam estado em seus containers,
+> e ambos são maleáveis, podendo ser substituídos sem afetar o resto da aplicação.
