@@ -12,7 +12,7 @@
 
 > Instalar o NODE.JS https://nodejs.org/dist/v12.19.0/node-v12.19.0-x64.msi
 
-> Instalar o Angular execute o comando "npm install -g @angular/cli@9.1.1"
+> Instalar o Angular, execute o comando "npm install -g @angular/cli@9.1.1"
 
 ## Configuração de Ambientes
 
@@ -96,7 +96,7 @@
 > Interface de usuário do sistema de clientes.
 
 **Arquitetura**
-> A abordagem de microserviços foi escolhida visando a escalabilidade do sistema, assim então criando serviços independentes
+> A arquitetura microserviços foi escolhida visando a escalabilidade do sistema, assim então criando serviços independentes
 > com suas respectivas regras de negócio. 
 > Ambos serviços são Stateless, ou seja, não armazenam estado em seus containers,
 > e ambos são maleáveis, podendo ser substituídos sem afetar o resto da aplicação.
