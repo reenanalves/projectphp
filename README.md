@@ -80,9 +80,7 @@
 
 > Para iniciar a aplicação execute "ng serve", lembrando que este iniciará com o ambiente padrão configurado em "frontend/CustomerSystem/environments/environment.ts"
 
-> Acesso ao sistema:
-<br>
-> Login: user; Senha: 1234567
+> Acesso ao sistema: "Login: user; Senha: 1234567"
 
 ## Documentação
 
