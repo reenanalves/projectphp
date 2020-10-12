@@ -9,7 +9,7 @@ export class RgPipe implements PipeTransform {
     if (value.length === 9) {
       return value.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/g, '\$1.\$2.\$3\-\$4');
     }
-    return 'error';
+    return value;
   }
 
 }
