@@ -2,12 +2,12 @@
 
 if (!isset($argv[1]) && $argv[1] == null && !$argv[1]) 
 {
-    throw new Exception("É necessário informar o ambiente 'enviroment' para instalar o php!");
+    throw new Exception("É necessário informar o ambiente 'environment' para instalar o php!");
 }else{
 
     $enviroment = $argv[1];
 
-    copydir('enviroments/' . $enviroment, 'app/config');
+    copydir('environments/' . $enviroment, 'app/config');
 
     if ($enviroment == 'prod') {
         unlink("tests");

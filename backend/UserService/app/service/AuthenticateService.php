@@ -43,21 +43,7 @@ class AuthenticateService{
         $user = $repository->findByUserAndPassAndStatus($user, $pass, UserModel::sEnable);
 
         if($user){
-            return Auth::tokenGenerate(["userid"=>$user->id, "name"=> $user->name, "user"=> "user", "expirein" => strtotime("+ 3 hours")]);
-        }
-        else{
-            return null;            
-        }
-    }
-
-    public static function GetInfoToken($user, $pass)
-    {        
-        $repository = new UserRepository();
-
-        $user = $repository->findByUserAndPassAndStatus($user, $pass, UserModel::sEnable);
-
-        if($user){
-            return Auth::tokenGenerate(["userid"=>$user->id, "name"=> $user->name, "user"=> "user", "expirein" => strtotime("+ 3 hours")]);
+            return Auth::tokenGenerate(["userid"=>$user->id, "name"=> $user->name, "user"=> $user->user, "expirein" => strtotime("+ 3 hours")]);
         }
         else{
             return null;            
